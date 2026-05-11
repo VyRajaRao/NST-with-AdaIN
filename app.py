@@ -9,9 +9,10 @@ from wtforms import FileField, SubmitField, FloatField, HiddenField
 from wtforms.validators import InputRequired
 from PIL import Image
 from torchvision import transforms
-import io
 from datetime import datetime
 from supabase import create_client
+
+torch.set_num_threads(1)
 
 # Import the existing AdaIN code
 
@@ -47,15 +48,25 @@ class SignInForm(FlaskForm):
     email = HiddenField('email')
     password = HiddenField('password')
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cpu")
 
-encoder = VGGEncoder("vgg_normalised.pth").to(device)
-decoder = Decoder().to(device)
-model_path = r"C:\23R21A05CD\AIML class\AI Projects\Neural Style Transfer with AdaIN\experiment\final_exp\decoder_final.pth"    
-decoder.load_state_dict(torch.load(model_path, map_location=device))
+encoder = None
+decoder = None
 
-encoder.eval()
-decoder.eval()
+def load_models():
+    global encoder, decoder
+
+    if encoder is None or decoder is None:
+
+        encoder = VGGEncoder("vgg_normalised.pth").to(device)
+
+        decoder = Decoder().to(device)
+        decoder.load_state_dict(torch.load("experiment/final_exp/decoder_final.pth", map_location=device))
+        
+        encoder.eval()
+        decoder.eval()
+
+    return encoder, decoder
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -171,6 +182,8 @@ def index():
                 style_image = Image.open(style_path).convert("RGB")
 
                 alpha = float(form.alpha.data)
+
+                encoder, decoder = load_models()
                 stylized_image = style_transfer(content_image, style_image, encoder, decoder, alpha, device)
 
 
@@ -300,6 +313,6 @@ def send_example(filename):
 
 
 if __name__ == "__main__":
-    from werkzeug.serving import run_simple
-    run_simple("localhost", 5000, app, use_reloader=True, use_debugger=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
 
