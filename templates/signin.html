@@ -1,0 +1,50 @@
+{% extends "base_theme.html" %}
+
+{% block title %}Sign In | NeuralArt{% endblock %}
+
+{% block page_styles %}
+<style>
+    .auth-shell {
+        max-width: 680px;
+        margin: 0 auto;
+    }
+    .form-control {
+        background-color: #1e293b;
+        border: 1px solid #334155;
+        color: #f8fafc;
+    }
+    .form-control:focus {
+        background-color: #1e293b;
+        border-color: #818cf8;
+        color: #f8fafc;
+        box-shadow: 0 0 0 0.25rem rgba(129, 140, 248, 0.25);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card p-4 p-md-5 auth-shell">
+    <div class="card-header text-center py-3 mb-4">Sign In / Sign Up</div>
+    <p class="muted-copy mb-4">Use your account to keep your style-transfer history connected to your profile.</p>
+
+    <form method="post" class="mb-0">
+        <div class="mb-3">
+            <label class="form-label">Name (required for Sign Up)</label>
+            <input type="text" class="form-control" name="name" placeholder="Your Name">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" required placeholder="you@example.com">
+        </div>
+        <div class="mb-4">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" required placeholder="Password">
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <button type="submit" class="btn btn-light fw-semibold" name="action" value="signin">Sign In</button>
+            <button type="submit" class="btn btn-outline-light" name="action" value="signup">Sign Up</button>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary ms-md-auto">Back</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

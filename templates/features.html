@@ -1,0 +1,40 @@
+{% extends "base_theme.html" %}
+
+{% block title %}Features | NeuralArt{% endblock %}
+
+{% block page_styles %}
+<style>
+    .feature-accent {
+        color: #a5b4fc;
+        font-family: 'Orbitron', sans-serif;
+        letter-spacing: 0.04em;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card p-4 p-md-5">
+    <div class="card-header text-center py-3 mb-4">Features</div>
+    <p class="muted-copy mb-4">The same neural visual style now continues across this page for a connected experience.</p>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card p-4 h-100">
+                <h5 class="feature-accent">Fast Transfer</h5>
+                <p class="mb-0">AdaIN-based stylization with adjustable strength for balanced artistic control.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4 h-100">
+                <h5 class="feature-accent">Personal History</h5>
+                <p class="mb-0">Signed-in users can revisit previous outputs directly in the gallery history table.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4 h-100">
+                <h5 class="feature-accent">One-Click Download</h5>
+                <p class="mb-0">Every generated result can be downloaded instantly from the home result section.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

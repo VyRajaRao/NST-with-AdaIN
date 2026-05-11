@@ -1,0 +1,15 @@
+content_dir: C:/23R21A05CD/AIML class/AI Projects/Neural Style Transfer with AdaIN/content_data
+style_dir: C:/23R21A05CD/AIML class/AI Projects/Neural Style Transfer with AdaIN/style_data
+vgg: C:/23R21A05CD/AIML class/AI Projects/Neural Style Transfer with AdaIN/vgg_normalised.pth
+experiment: experiment1
+final_size: 256
+content_size: 512
+style_size: 512
+crop: True
+batch_size: 4
+lr: 0.0001
+lr_decay: 5e-05
+epochs: 1
+content_weight: 1.0
+style_weight: 10.0
+log_interval: 1

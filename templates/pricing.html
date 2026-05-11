@@ -1,0 +1,29 @@
+{% extends "base_theme.html" %}
+
+{% block title %}Pricing | NeuralArt{% endblock %}
+
+{% block page_styles %}
+<style>
+    .price {
+        font-size: 2rem;
+        color: #a5b4fc;
+        font-family: 'Orbitron', sans-serif;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="card p-4 p-md-5">
+    <div class="card-header text-center py-3 mb-4">Pricing</div>
+    <p class="muted-copy mb-4">Built with the same smooth visual style as the main experience.</p>
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="card p-4 h-100">
+                <h4>Free Demo</h4>
+                <div class="price">$0</div>
+                <p class="mb-0">Upload content and style images, run transfer, and download generated results.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

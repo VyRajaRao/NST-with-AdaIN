@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NeuralArt{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #0f172a;
+            --bg-panel: rgba(30, 41, 59, 0.62);
+            --line-soft: rgba(255, 255, 255, 0.09);
+            --text-main: #e2e8f0;
+            --text-soft: #cbd5e1;
+            --text-muted: #94a3b8;
+            --accent-a: #818cf8;
+            --accent-b: #c084fc;
+            --accent-c: #f472b6;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg-deep);
+            background-image:
+                linear-gradient(rgba(15, 23, 42, 0.84), rgba(15, 23, 42, 0.9)),
+                url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1974&auto=format&fit=crop');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        .navbar {
+            background: rgba(15, 23, 42, 0.78);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .navbar-brand {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            background: linear-gradient(to right, var(--accent-a), var(--accent-b));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link {
+            color: var(--text-main) !important;
+            font-weight: 500;
+            margin-left: 0.75rem;
+            transition: color 0.25s ease;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--accent-a) !important;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-a);
+            transition: width 0.25s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .card {
+            background: var(--bg-panel);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--line-soft);
+            border-radius: 18px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+            color: var(--text-main);
+        }
+
+        .card .card-body,
+        .card .card-title,
+        .card h1,
+        .card h2,
+        .card h3,
+        .card h4,
+        .card h5,
+        .card h6,
+        .card p,
+        .card li,
+        .card td,
+        .card th,
+        .card span,
+        .card label {
+            color: inherit;
+        }
+
+        .card-header {
+            background: rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid var(--line-soft);
+            color: #f8fafc;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .muted-copy {
+            color: var(--text-muted);
+        }
+
+        .page-shell p,
+        .page-shell li,
+        .page-shell small,
+        .page-shell .form-label {
+            color: var(--text-soft);
+        }
+
+        .page-shell .form-control {
+            color: #f8fafc;
+        }
+
+        .page-shell .form-control::placeholder {
+            color: #94a3b8;
+            opacity: 1;
+        }
+
+        .alert {
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            color: var(--text-main);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+        }
+
+        .alert-success {
+            border-color: rgba(34, 197, 94, 0.35);
+            color: #bbf7d0;
+        }
+
+        .alert-warning {
+            border-color: rgba(245, 158, 11, 0.35);
+            color: #fde68a;
+        }
+
+        .alert-danger {
+            border-color: rgba(239, 68, 68, 0.35);
+            color: #fecaca;
+        }
+
+        .alert-info {
+            border-color: rgba(56, 189, 248, 0.35);
+            color: #bae6fd;
+        }
+
+        .page-shell {
+            position: relative;
+            z-index: 2;
+            padding-top: 7rem;
+            padding-bottom: 2rem;
+        }
+
+        .page-shell .text-light-emphasis {
+            color: var(--text-soft) !important;
+        }
+
+        .footer-section {
+            position: relative;
+            z-index: 2;
+            background: rgba(15, 23, 42, 0.92);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+            color: var(--text-soft);
+        }
+
+        .footer-section h5 {
+            color: #f8fafc;
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .footer-link {
+            color: var(--text-soft);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.6rem;
+            transition: color 0.25s;
+        }
+
+        .footer-link:hover {
+            color: var(--accent-a);
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: 0;
+            opacity: 0.33;
+            animation: floatOrb 18s infinite ease-in-out alternate;
+            pointer-events: none;
+        }
+
+        .orb-1 {
+            top: -10%;
+            left: -10%;
+            width: 620px;
+            height: 620px;
+            background: radial-gradient(circle, #4f46e5, transparent 70%);
+        }
+
+        .orb-2 {
+            bottom: -12%;
+            right: -10%;
+            width: 540px;
+            height: 540px;
+            background: radial-gradient(circle, #c084fc, transparent 70%);
+            animation-delay: -6s;
+        }
+
+        .orb-3 {
+            top: 42%;
+            left: 36%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #f472b6, transparent 70%);
+            animation-delay: -10s;
+            opacity: 0.2;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, 45px) scale(1.08); }
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.14) 50%, rgba(0,0,0,0.14));
+            background-size: 100% 4px;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.46;
+        }
+
+        #neuralCanvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(24px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-shell {
+                padding-top: 6.2rem;
+            }
+        }
+    </style>
+    {% block page_styles %}{% endblock %}
+</head>
+<body>
+<canvas id="neuralCanvas"></canvas>
+<div class="scanlines"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('index') }}"><i class="fas fa-brain me-2"></i>NeuralArt</a>
+        <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.endpoint == 'gallery' %}active{% endif %}" href="{{ url_for('gallery') }}">Gallery</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.endpoint == 'features' %}active{% endif %}" href="{{ url_for('features') }}">Features</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.endpoint == 'pricing' %}active{% endif %}" href="{{ url_for('pricing') }}">Pricing</a></li>
+                <li class="nav-item"><a class="nav-link {% if request.endpoint == 'contact' %}active{% endif %}" href="{{ url_for('contact') }}">Contact</a></li>
+            </ul>
+            {% if user %}
+                <span class="text-light ms-3 small">Hi, {{ user.name }}</span>
+                <a href="{{ url_for('signout') }}" class="btn btn-sm btn-outline-light ms-3 rounded-pill px-4">Sign Out</a>
+            {% else %}
+                <a href="{{ url_for('signin') }}" class="btn btn-sm btn-outline-light ms-3 rounded-pill px-4 {% if request.endpoint == 'signin' %}active{% endif %}">Sign In</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div class="page-shell container fade-in-up">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} mt-2 flash-alert" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</div>
+
+<footer class="footer-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <h5><i class="fas fa-brain me-2"></i>NeuralArt</h5>
+                <p class="mb-3">"Every artist dips his brush in his own soul, and paints his own nature into his pictures."</p>
+                <p class="small muted-copy">A connected experience across every page with the same neural visual language.</p>
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <h5>Quick Links</h5>
+                <a href="{{ url_for('index') }}" class="footer-link">Home</a>
+                <a href="{{ url_for('gallery') }}" class="footer-link">Gallery</a>
+                <a href="{{ url_for('features') }}" class="footer-link">Features</a>
+                <a href="{{ url_for('pricing') }}" class="footer-link">Pricing</a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h5>Contact</h5>
+                <p class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>Hyderabad City</p>
+                <p class="mb-2"><i class="fas fa-envelope me-2"></i> vyraja777@gmail.com</p>
+                <p class="mb-2"><i class="fas fa-phone me-2"></i> +91 8629923817</p>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h5>Follow</h5>
+                <div class="d-flex gap-2 mb-2">
+                    <span class="btn btn-sm btn-outline-light rounded-pill px-3">Twitter</span>
+                    <span class="btn btn-sm btn-outline-light rounded-pill px-3">Instagram</span>
+                </div>
+                <p class="small muted-copy mb-0">Consistent backgrounds keep page transitions smooth and connected.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    (function() {
+        const canvas = document.getElementById('neuralCanvas');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        let width = 0;
+        let height = 0;
+        let particles = [];
+        const mouse = { x: null, y: null, radius: 145 };
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.45;
+                this.vy = (Math.random() - 0.5) * 0.45;
+                this.size = Math.random() * 2.4 + 1.4;
+                this.hue = Math.floor(Math.random() * 10) * 36;
+                this.density = Math.random() * 24 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (mouse.x !== null) {
+                    const dx = mouse.x - this.x;
+                    const dy = mouse.y - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < mouse.radius && distance > 0) {
+                        const force = (mouse.radius - distance) / mouse.radius;
+                        this.x -= (dx / distance) * force * this.density;
+                        this.y -= (dy / distance) * force * this.density;
+                    }
+                }
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+                this.hue = (this.hue + 0.2) % 360;
+            }
+
+            draw() {
+                ctx.fillStyle = `hsla(${this.hue}, 70%, 62%, 0.28)`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.floor(window.innerWidth / 16);
+            for (let i = 0; i < count; i += 1) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i += 1) {
+                const p = particles[i];
+                p.update();
+                p.draw();
+
+                for (let j = i + 1; j < particles.length; j += 1) {
+                    const q = particles[j];
+                    const d = Math.hypot(p.x - q.x, p.y - q.y);
+                    if (d < 102) {
+                        ctx.strokeStyle = `hsla(${p.hue}, 70%, 62%, ${0.12 * (1 - d / 102)})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(q.x, q.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            resize();
+            initParticles();
+        });
+
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.clientX;
+            mouse.y = event.clientY;
+        });
+
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        resize();
+        initParticles();
+        animate();
+
+        const flashAlerts = document.querySelectorAll('[role="alert"]');
+        if (flashAlerts.length) {
+            setTimeout(() => {
+                flashAlerts.forEach((alertNode) => {
+                    alertNode.classList.add('dismiss');
+                    setTimeout(() => alertNode.remove(), 400);
+                });
+            }, 2000);
+        }
+    })();
+</script>
+{% block page_scripts %}{% endblock %}
+</body>
+</html>
