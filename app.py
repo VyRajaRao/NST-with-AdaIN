@@ -1,5 +1,4 @@
 import os
-import torch
 from flask import Flask, render_template, request, url_for, send_from_directory, redirect, flash, session
 from flask_wtf import FlaskForm
 from flask_bootstrap import Bootstrap
@@ -12,6 +11,7 @@ from torchvision import transforms
 from datetime import datetime
 from supabase import create_client
 
+import torch
 torch.set_num_threads(1)
 
 # Import the existing AdaIN code
@@ -75,11 +75,11 @@ def allowed_file(filename):
 
 def style_transfer(content_image, style_image, encoder, decoder, alpha, device):
     content_transform = transforms.Compose([
-        transforms.Resize((256, 256)),
+        transforms.Resize((192, 192))
         transforms.ToTensor(),
     ])
     style_transform = transforms.Compose([
-        transforms.Resize((256, 256)),
+        transforms.Resize((192, 192))
         transforms.ToTensor(),
     ])
 
@@ -180,6 +180,9 @@ def index():
             try:
                 content_image = Image.open(content_path).convert("RGB")
                 style_image = Image.open(style_path).convert("RGB")
+
+                content_image.thumbnail((512, 512))
+                style_image.thumbnail((512, 512))
 
                 alpha = float(form.alpha.data)
 
