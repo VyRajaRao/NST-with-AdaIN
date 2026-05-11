@@ -75,11 +75,11 @@ def allowed_file(filename):
 
 def style_transfer(content_image, style_image, encoder, decoder, alpha, device):
     content_transform = transforms.Compose([
-        transforms.Resize((192, 192))
+        transforms.Resize((192, 192)),
         transforms.ToTensor(),
     ])
     style_transform = transforms.Compose([
-        transforms.Resize((192, 192))
+        transforms.Resize((192, 192)),
         transforms.ToTensor(),
     ])
 
